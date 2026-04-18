@@ -3,18 +3,13 @@ from __future__ import annotations
 from pathlib import Path
 
 from langchain_community.vectorstores import Chroma
-from langchain_openai import OpenAIEmbeddings
+from langchain_community.embeddings import HuggingFaceEmbeddings
 
 from app.core.config import Settings
 
 
-def get_embeddings(settings: Settings) -> OpenAIEmbeddings:
-    if not settings.openai_api_key:
-        raise ValueError("OPENAI_API_KEY is not set.")
-    return OpenAIEmbeddings(
-        model=settings.embedding_model,
-        api_key=settings.openai_api_key,
-    )
+def get_embeddings(settings: Settings) -> HuggingFaceEmbeddings:
+    return HuggingFaceEmbeddings(model_name=settings.embedding_model)
 
 
 def get_vectorstore(settings: Settings, session_id: str) -> Chroma:

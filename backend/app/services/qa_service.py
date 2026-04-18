@@ -6,18 +6,18 @@ from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.documents import Document
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_openai import ChatOpenAI
+from langchain_groq import ChatGroq
 
 from app.core.config import Settings
 from app.core.vectorstore import get_vectorstore
 
 
-def get_llm(settings: Settings) -> ChatOpenAI:
-    if not settings.openai_api_key:
-        raise ValueError("OPENAI_API_KEY is not set.")
-    return ChatOpenAI(
-        model=settings.openai_model,
-        api_key=settings.openai_api_key,
+def get_llm(settings: Settings) -> ChatGroq:
+    if not settings.groq_api_key:
+        raise ValueError("GROQ_API_KEY is not set.")
+    return ChatGroq(
+        model=settings.groq_model,
+        api_key=settings.groq_api_key,
         temperature=0,
     )
 
