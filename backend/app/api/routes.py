@@ -72,12 +72,15 @@ def ask_question(payload: AskRequest):
         raise HTTPException(status_code=500, detail="GROQ_API_KEY is not configured.")
 
     session_name = safe_session_name(payload.session_id)
-    answer, sources = answer_question(
-        settings=settings,
-        session_id=session_name,
-        question=payload.question,
-        top_k=payload.top_k,
-    )
+    try:
+        answer, sources = answer_question(
+            settings=settings,
+            session_id=session_name,
+            question=payload.question,
+            top_k=payload.top_k,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
 
     return AskResponse(
         session_id=payload.session_id,

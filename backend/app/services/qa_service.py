@@ -1,20 +1,25 @@
 from __future__ import annotations
  
 from typing import List
- 
+
 from langchain_core.documents import Document
-from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
-from langchain_core.runnables import RunnablePassthrough
-from langchain_groq import ChatGroq
- 
+from langchain_core.prompts import ChatPromptTemplate
+
 from app.core.config import Settings
 from app.core.vectorstore import get_vectorstore
  
  
-def get_llm(settings: Settings) -> ChatGroq:
+def get_llm(settings: Settings):
     if not settings.groq_api_key:
         raise ValueError("GROQ_API_KEY is not set.")
+    try:
+        from langchain_groq import ChatGroq
+    except ModuleNotFoundError as exc:
+        raise ValueError(
+            "Missing dependency 'langchain-groq'. Install backend requirements with "
+            "'pip install -r backend/requirements.txt'."
+        ) from exc
     return ChatGroq(
         model=settings.groq_model,
         api_key=settings.groq_api_key,

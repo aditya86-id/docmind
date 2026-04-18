@@ -5,6 +5,11 @@ services:
     rootDir: backend
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    disk:
+      name: docmind-data
+      mountPath: /var/data
+      sizeGB: 1
     envVars:
       - key: GROQ_API_KEY
         sync: false
@@ -13,9 +18,9 @@ services:
       - key: EMBEDDING_MODEL
         value: all-MiniLM-L6-v2
       - key: CHROMA_DIR
-        value: storage/chroma
+        value: /var/data/chroma
       - key: UPLOAD_DIR
-        value: storage/uploads
+        value: /var/data/uploads
 
   - type: web
     name: docmind-frontend

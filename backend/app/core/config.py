@@ -2,9 +2,11 @@ from functools import lru_cache
 from pathlib import Path
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(env_file=PROJECT_ROOT / ".env", extra="ignore")
 
     groq_api_key: str = ""
     groq_model: str = "llama-3.3-70b-versatile"
@@ -17,11 +19,13 @@ class Settings(BaseSettings):
 
     @property
     def chroma_path(self) -> Path:
-        return Path(self.chroma_dir)
+        path = Path(self.chroma_dir)
+        return path if path.is_absolute() else PROJECT_ROOT / path
 
     @property
     def upload_path(self) -> Path:
-        return Path(self.upload_dir)
+        path = Path(self.upload_dir)
+        return path if path.is_absolute() else PROJECT_ROOT / path
 
 
 @lru_cache
