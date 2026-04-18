@@ -31,8 +31,8 @@ async def upload_documents(
     files: list[UploadFile] = File(...),
 ):
     settings = Settings()
-    if not settings.openai_api_key:
-        raise HTTPException(status_code=500, detail="OPENAI_API_KEY is not configured.")
+    if not settings.groq_api_key:
+        raise HTTPException(status_code=500, detail="GROQ_API_KEY is not configured.")
 
     if not files:
         raise HTTPException(status_code=400, detail="No files uploaded.")
@@ -68,8 +68,8 @@ async def upload_documents(
 @router.post("/ask", response_model=AskResponse)
 def ask_question(payload: AskRequest):
     settings = Settings()
-    if not settings.openai_api_key:
-        raise HTTPException(status_code=500, detail="OPENAI_API_KEY is not configured.")
+    if not settings.groq_api_key:
+        raise HTTPException(status_code=500, detail="GROQ_API_KEY is not configured.")
 
     session_name = safe_session_name(payload.session_id)
     answer, sources = answer_question(
