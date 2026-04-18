@@ -9,7 +9,7 @@ import streamlit as st
 
 st.set_page_config(page_title="AI Document QA", page_icon="📄", layout="wide")
 
-BACKEND_URL = os.getenv("BACKEND_URL", "http://localhost:8000").rstrip("/")
+BACKEND_URL = os.getenv("BACKEND_URL", "https://docmind-23xw.onrender.com").rstrip("/")
 
 if "session_id" not in st.session_state:
     st.session_state.session_id = str(uuid.uuid4())
